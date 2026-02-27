@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import LikeButton from "./LikeButton";
 
 export default function QuoteCard({ quote }) {
@@ -10,9 +11,19 @@ export default function QuoteCard({ quote }) {
         &ldquo;
       </span>
 
-      <blockquote className="mb-4 text-lg font-light leading-relaxed text-white/90 sm:text-xl">
-        {quote.quote}
-      </blockquote>
+      <Link
+        href={`/quote/${quote.slug || quote.id}`}
+        className="block mb-4"
+        aria-label={`Read more about: ${quote.quote?.slice(0, 80)}`}
+      >
+        <blockquote className="text-lg font-light leading-relaxed text-white/90 sm:text-xl transition-colors group-hover:text-white">
+          {quote.quote}
+        </blockquote>
+      </Link>
+
+      {quote.author && (
+        <p className="mb-3 text-sm text-white/40">— {quote.author}</p>
+      )}
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

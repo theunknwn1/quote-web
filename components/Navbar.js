@@ -4,6 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
+const NAV_LINKS = [
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
 const GENRES = [
   "motivation",
   "sad",
@@ -49,6 +55,15 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-6 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm text-white/70 transition-colors hover:text-white"
+            >
+              {link.label}
+            </Link>
+          ))}
           <NavDropdown label="Genres" items={GENRES} type="genre" />
           <NavDropdown label="Categories" items={CATEGORIES} type="category" />
           <NavDropdown label="Languages" items={LANGUAGES} type="language" />
@@ -81,6 +96,22 @@ export default function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="border-t border-white/10 bg-black px-4 pb-6 pt-4 md:hidden animate-fade-in">
+          {/* Page links */}
+          <div className="mb-4 flex flex-col gap-2">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="rounded-lg px-3 py-2 text-sm text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="my-3 border-t border-white/10" />
+
           <p className="mb-2 text-xs uppercase tracking-widest text-white/40">
             Genres
           </p>
@@ -104,7 +135,7 @@ export default function Navbar() {
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
-                href={`/quotes/motivation/${cat}/english`}
+                href={`/categories/${cat}`}
                 onClick={() => setMenuOpen(false)}
                 className="rounded-full border border-white/20 px-3 py-1 text-sm text-white/70 transition-colors hover:bg-white hover:text-black"
               >
@@ -140,7 +171,7 @@ function NavDropdown({ label, items, type }) {
       case "genre":
         return `/quotes/${item}/success/english`;
       case "category":
-        return `/quotes/motivation/${item}/english`;
+        return `/categories/${item}`;
       case "language":
         return `/quotes/motivation/success/${item}`;
       default:
